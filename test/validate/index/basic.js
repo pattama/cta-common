@@ -14,13 +14,6 @@ describe('validate / basic', function() {
   });
   it('reject if invalid input type', function() {
     try {
-      validate(null, {key: 'string'});
-    } catch (e) {
-      assert.equal(e.message, 'validate module => invalid input object');
-    }
-  });
-  it('reject if invalid input type', function() {
-    try {
       validate('abc', {key: 'string'});
     } catch (e) {
       assert.equal(e.message, 'validate module => invalid input object');
@@ -28,16 +21,16 @@ describe('validate / basic', function() {
   });
   it('reject if missing mandatory field', function() {
     try {
-      validate({key: 'abc'}, {key: 'string', value: 'integer'});
+      validate({key: 'abc'}, {key: 'string', value: 'number'});
     } catch (e) {
       assert.equal(e.message, 'validate module => missing parameter "value"');
     }
   });
   it('reject if wrong type of field', function() {
     try {
-      validate({key: 'abc', value: 'def'}, {key: 'string', value: 'integer'});
+      validate({key: 'abc', value: 'def'}, {key: 'string', value: 'number'});
     } catch (e) {
-      assert.equal(e.message, 'validate module => invalid parameter type "value", provided "string", expected "integer"');
+      assert.equal(e.message, 'validate module => invalid parameter type "value", provided "string", expected "number"');
     }
   });
   it('set optional fields to their defaults', function() {

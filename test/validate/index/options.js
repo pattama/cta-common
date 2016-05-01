@@ -5,16 +5,16 @@ const tools = require('../../../lib');
 const validate = tools.validate;
 
 describe('validate / options', function() {
-  it('throw an error if invalid input', function() {
+  it('throwErr enabled', function() {
     try {
-      validate({a: 1}, {a: 'string'});
+      validate({a: 1}, {a: 'string'}, {throwErr: true});
       assert.fail('passed', 'should throw an error');
     } catch (e) {
       assert(typeof e.message === 'string');
     }
   });
 
-  it('return object if invalid input', function() {
+  it('throwErr disabled', function() {
     try {
       const result = validate({a: 1}, {a: 'string'}, {throwErr: false});
       assert.strictEqual(result.isValid, false);

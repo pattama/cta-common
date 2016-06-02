@@ -18,6 +18,13 @@ describe('validate / types', function() {
     assert.strictEqual(types.number('abc'), false);
   });
 
+  it('valid boolean', function() {
+    assert.strictEqual(types.boolean(true), true);
+  });
+  it('invalid boolean', function() {
+    assert.strictEqual(types.boolean('abc'), false);
+  });
+
   it('valid array', function() {
     assert.strictEqual(types.array([]), true);
     assert.strictEqual(types.array([1, 2]), true);
@@ -36,6 +43,13 @@ describe('validate / types', function() {
     assert.strictEqual(types.object(null), false, 'we do not consider here "null" as object');
     assert.strictEqual(types.object(function(){}), false);
     assert.strictEqual(types.object('abc'), false);
+  });
+
+  it('valid function', function() {
+    assert.strictEqual(types.function(function(){}), true);
+  });
+  it('invalid function', function() {
+    assert.strictEqual(types.function('abc'), false);
   });
 
   it('valid dir', function() {

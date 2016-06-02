@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('chai').assert;
-const tools = require('../../../lib');
+const tools = require('../../lib');
 const validate = tools.validate;
 
 describe.skip('validate / advanced', function() {

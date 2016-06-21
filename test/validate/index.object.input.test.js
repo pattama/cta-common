@@ -5,62 +5,68 @@ const Validate = require('../../lib/validate/');
 
 describe('validate: object input', function() {
   it('null input', function() {
-    let result = new Validate(null, {a: 'number', b: 'boolean'});
+    const result = new Validate(null, {a: 'number', b: 'boolean'});
     assert.isNotOk(result.isValid);
   });
 
   it('keys of one type', function() {
-    let result = new Validate({a: 123, b: true}, {a: 'number', b: 'boolean'});
-    assert.isOk(result.isValid);
-    result = new Validate({a: 123, b: true}, {a: 'string', b: 'number'});
-    assert.isNotOk(result.isValid);
-    result = new Validate({a: 123}, {a: 'string', b: 'number'});
-    assert.isNotOk(result.isValid);
+    const pattern = {
+      type: 'object',
+      items: {
+        a: 'number',
+        b: 'boolean',
+      },
+    };
+    let result = new Validate({a: 123, b: true}, pattern);
+    assert.isOk(result.isValid, 'should be ok');
+    result = new Validate({a: 'abc', b: true}, pattern);
+    assert.isNotOk(result.isValid, 'should not be ok (1)');
+    result = new Validate({a: 123}, pattern);
+    assert.isNotOk(result.isValid, 'should not be ok (2)');
   });
 
   it('keys of multiple types', function() {
-    const input = {a: 123, b: 'abc'};
-    let result = new Validate(input, {
-      a: ['number', 'string'],
-      b: ['string', 'boolean'],
-    });
+    const pattern = {
+      type: 'object',
+      items: {
+        a: ['number', 'string'],
+        b: ['string', 'boolean'],
+      },
+    };
+    let result = new Validate({a: 123, b: 'abc'}, pattern);
     assert.isOk(result.isValid);
-    result = new Validate(input, {
-      a: ['number', 'string'],
-      b: ['number', 'boolean'],
-    });
+    result = new Validate({a: true, b: 'abc'}, pattern);
     assert.isNotOk(result.isValid);
   });
 
   it('object pattern', function() {
-    const input = {a: 123, b: 'abc'};
-    let result = new Validate(input, {
-      a: {
-        type: 'number',
+    const pattern = {
+      type: 'object',
+      items: {
+        a: {
+          type: 'number',
+        },
+        b: {
+          type: 'string',
+        },
       },
-      b: {
-        type: 'string',
-      },
-    });
+    };
+    let result = new Validate({a: 123, b: 'abc'}, pattern);
     assert.isOk(result.isValid);
-    result = new Validate(input, {
-      a: {
-        type: 'string',
-      },
-      b: {
-        type: 'number',
-      },
-    });
+    result = new Validate({a: 'abc', b: 123}, pattern);
     assert.isNotOk(result.isValid);
   });
 
   it('optional key with default option', function() {
     const pattern = {
-      a: 'number',
-      b: {
-        type: 'string',
-        optional: true,
-        defaultTo: 456,
+      type: 'object',
+      items: {
+        a: 'number',
+        b: {
+          type: 'string',
+          optional: true,
+          defaultTo: 456,
+        },
       },
     };
     let result = new Validate({a: 123}, pattern);
@@ -71,94 +77,97 @@ describe('validate: object input', function() {
   });
 
   it('key as array of elements with same type', function() {
-    const input = {
+    const pattern = {
+      type: 'object',
+      items: {
+        a: 'number',
+        b: {
+          type: 'array',
+          items: 'string',
+        },
+      },
+    };
+    let result = new Validate({
       a: 123,
       b: ['abc', 'def'],
-    };
-    let result = new Validate(input, {
-      a: 'number',
-      b: {
-        type: 'array',
-        items: 'string',
-      }});
+    }, pattern);
     assert.isOk(result.isValid);
-    result = new Validate(input, {
-      a: 'number',
-      b: {
-        type: 'array',
-        items: 'number',
-      }});
+    result = new Validate({
+      a: 123,
+      b: ['abc', 123],
+    }, pattern);
     assert.isNotOk(result.isValid);
   });
 
   it('key as array of elements with object type', function() {
-    const input = {
-      a: 123,
-      b: [{c: 1, d: true}, {c: 2, d: false}],
-    };
-    let result = new Validate(input, {
-      a: 'number',
-      b: {
-        type: 'array',
-        items: {
-          c: 'number',
-          d: 'boolean',
-        },
-      }});
-    assert.isOk(result.isValid, 'should be ok');
-    result = new Validate(input, {
-      a: 'number',
-      b: {
-        type: 'array',
-        items: {
-          c: 'string',
-          d: 'boolean',
-        },
-      }});
-    assert.isNotOk(result.isValid, 'should not be ok');
-  });
-
-  it('object with 2 depths', function() {
-    const input = {a: {b: 'abc', c: 123}};
-    let result = new Validate(input, {
-      a: {
-        type: 'object',
-        items: {
-          b: 'string',
-          c: 'number',
-        },
-      },
-    });
-    assert.isOk(result.isValid);
-    result = new Validate(input, {
-      a: {
-        type: 'object',
-        items: {
-          b: 'boolean',
-          c: 'number',
-        },
-      },
-    });
-    assert.isNotOk(result.isValid);
-  });
-
-  it('object with 3 depths', function() {
     const pattern = {
-      a: {
-        type: 'object',
-        items: {
-          b: 'string',
-          c: {
+      type: 'object',
+      items: {
+        a: 'number',
+        b: {
+          type: 'array',
+          items: {
             type: 'object',
             items: {
-              d: 'number',
-              e: 'string',
+              c: 'number',
+              d: 'boolean',
             },
           },
         },
       },
     };
-    let result = new Validate({
+    const input = {
+      a: 123,
+      b: [{c: 1, d: true}, {c: 2, d: false}],
+    };
+    let result = new Validate(input, pattern);
+    assert.isOk(result.isValid, 'should be ok');
+    input.b.push({c: 3, d: 'abc'});
+    result = new Validate(input, pattern);
+    assert.isNotOk(result.isValid, 'should not be ok');
+  });
+
+  it('object with 2 depths', function() {
+    const pattern = {
+      type: 'object',
+      items: {
+        a: {
+          type: 'object',
+          items: {
+            b: 'string',
+            c: 'number',
+          },
+        },
+      },
+    };
+    const input = {a: {b: 'abc', c: 123}};
+    let result = new Validate(input, pattern);
+    assert.isOk(result.isValid);
+    input.a.c = false;
+    result = new Validate(input, pattern);
+    assert.isNotOk(result.isValid);
+  });
+
+  it('object with 3 depths', function() {
+    const pattern = {
+      type: 'object',
+      items: {
+        a: {
+          type: 'object',
+          items: {
+            b: 'string',
+            c: {
+              type: 'object',
+              items: {
+                d: 'number',
+                e: 'string',
+              },
+            },
+          },
+        },
+      },
+    };
+    const input = {
       a: {
         b: 'abc',
         c: {
@@ -166,17 +175,11 @@ describe('validate: object input', function() {
           e: 'def',
         },
       },
-    }, pattern);
+    };
+    let result = new Validate(input, pattern);
     assert.isOk(result.isValid);
-    result = new Validate({
-      a: {
-        b: 'abc',
-        c: {
-          d: true,
-          e: 'def',
-        },
-      },
-    }, pattern);
+    input.a.c.e = true;
+    result = new Validate(input, pattern);
     assert.isNotOk(result.isValid);
   });
 });

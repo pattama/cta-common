@@ -1,34 +1,34 @@
 'use strict';
 
 module.exports = {
-  logger: {
-    type: 'object',
-    optional: true,
-    defaultTo: {},
-  },
-  bricks: {
-    type: 'array',
-    items: {
-      type: 'object',
+  type: 'object',
+  items: {
+    bricks: {
+      type: 'array',
       items: {
-        name: 'string',
-        properties: 'object',
-        publish: {
-          type: 'array',
-          items: {
-            type: 'object',
+        type: 'object',
+        items: {
+          name: 'string',
+          properties: 'object',
+          publish: {
+            type: 'array',
             items: {
-              topic: 'string',
-              data: {
-                type: 'array',
-                items: {
-                  type: 'object',
+              type: 'object',
+              items: {
+                topic: 'string',
+                data: {
+                  type: 'array',
+                  optional: true,
+                  defaultTo: [{}],
                   items: {
-                    nature: {
-                      type: 'object',
-                      items: {
-                        type: 'string',
-                        quality: 'string',
+                    type: 'object',
+                    items: {
+                      nature: {
+                        type: 'object',
+                        items: {
+                          type: 'string',
+                          quality: 'string',
+                        },
                       },
                     },
                   },

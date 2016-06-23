@@ -5,7 +5,7 @@ const Validate = require('../../lib/validate/');
 
 describe('validate: special cases', function() {
   it('null input', function() {
-    const result = new Validate(null, {a: 'number', b: 'boolean'});
+    const result = new Validate(null, {a: 'number'});
     assert.isNotOk(result.isValid);
   });
 });

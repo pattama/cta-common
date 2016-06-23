@@ -5,19 +5,29 @@ const Validate = require('../../lib/validate/');
 const pattern = require('./index.bricks.testdata/pattern');
 const input1 = require('./index.bricks.testdata/input1.ok');
 const input2 = require('./index.bricks.testdata/input2.ok');
+const input3 = require('./index.bricks.testdata/input3.nok');
 const input4 = require('./index.bricks.testdata/input4.nok');
+const input5 = require('./index.bricks.testdata/input5.nok');
 
 describe('validate: cta flowcontrol config', function() {
-  it('config1', function() {
+  it('valid config (1)', function() {
     const result = new Validate(input1, pattern);
     assert.isOk(result.isValid);
   });
-  it('config2', function() {
+  it('valid config (2)', function() {
     const result = new Validate(input2, pattern);
     assert.isOk(result.isValid);
   });
-  it('config4', function() {
+  it('invalid config (3)', function() {
+    const result = new Validate(input3, pattern);
+    assert.isNotOk(result.isValid);
+  });
+  it('invalid config (4)', function() {
     const result = new Validate(input4, pattern);
+    assert.isNotOk(result.isValid);
+  });
+  it('invalid config (5)', function() {
+    const result = new Validate(input5, pattern);
     assert.isNotOk(result.isValid);
   });
 });

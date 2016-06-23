@@ -10,7 +10,7 @@ module.exports = {
       },
       publish: [
         {
-          topic: 't1',
+          topic: 123,
           data: [
             {
               nature: {
@@ -26,16 +26,8 @@ module.exports = {
             },
           ],
         },
-        {
-          topic: 't2',
-          data: [{}],
-        },
       ],
       subscribe: [
-        {
-          topic: 't3',
-          data: [{}],
-        },
         {
           topic: 't4',
           data: [

@@ -390,9 +390,6 @@ describe('validate: object input', function() {
     assert.isOk(result.isValid, 'should be ok');
     input.bricks[0].publish[0].data[0].nature.type = true;
     result = new Validate(input, pattern);
-    assert.isNotOk(result.isValid, 'should not be ok (1)');
-    /*input.bricks[0].publish[0].data = [{}];
-    result = new Validate(input, pattern);
-    assert.isOk(result.isValid, 'should not be ok (2)');*/
+    assert.isNotOk(result.isValid, 'should not be ok');
   });
 });

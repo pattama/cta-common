@@ -18,7 +18,11 @@ const result = new Validate(input, pattern, options);
 
 - First parameter is the value you want to validate
 - Second parameter is the validation pattern
-- Third parameter is an optional object that currently support 'throwErr' option. If it is set to true, it will throw an error if the input is invalid.
+- Third parameter is an optional object that currently support 'throwErr' option. If it is set to true, it will throw an error if the input is not matching the pattern.
+````javascript
+result = new Validate(input, pattern, {throwErr: true}); // will throw an error
+result = new Validate(input, pattern); // will not throw an error
+````
 - This module returns an object:
     * isValid: is a boolean, true if the input is valid
     * output: is the validated input, useful when the input is optional, to return a default value
@@ -59,7 +63,6 @@ result = new Validate('abc', [{type: 'object', items: {a: 'number'}}, 'string'])
     * it checks that each key of the object is matching the items pattern
     * it checks that all mandatory keys in the pattern are present in the input
     * if a key is optional and not defined, it is set to its default
-
 
 ## Examples
 ````javascript

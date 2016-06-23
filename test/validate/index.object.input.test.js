@@ -22,6 +22,10 @@ describe('validate: object input', function() {
       result = new Validate({a: 123}, pattern);
       assert.isNotOk(result.isValid, 'should not be ok (2)');
     });
+    it('string pattern', function() {
+      const result = new Validate({a: 1}, 'number');
+      assert.isNotOk(result.isValid);
+    });
   });
 
   context('keys with array pattern', function() {

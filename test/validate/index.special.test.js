@@ -8,4 +8,12 @@ describe('validate: special cases', function() {
     const result = new Validate(null, {a: 'number'});
     assert.isNotOk(result.isValid);
   });
+  it('incorrect object pattern', function() {
+    const result = new Validate({a: 1}, {type: 'object', items: 'number'});
+    assert.isNotOk(result.isValid);
+  });
+  it('incorrect array pattern', function() {
+    const result = new Validate(1, {type: 'array', items: 'string'});
+    assert.isNotOk(result.isValid);
+  });
 });

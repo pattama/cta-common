@@ -1,85 +1,144 @@
 # validate module
 
-## Features
-
-This module validates an input object according to a pattern object.
-
-- It checks that all mandatory fields in the pattern are present if the input
-- It checks that field types in the input fit those in the pattern
-- It sets optional fields in the input to their default values provided in the pattern
+This module validates an input value according to a pattern.
 
 ## How to use it
 
 Require it
 
 ````javascript
-const validate = require('cta-tools').validate;
+const Validate = require('cta-tools').validate;
 ````
 
 Then you can call it with 2 or 3 parameters
 
-- First parameter is the object you want to validate
-- Second parameter is the pattern
-- Third parameter is an optional object that currently support 'throwErr' option. It controls the behaviour of the module. Either to throw an error if the input is invalid or just return a boolean flag 'isValid' 
-
-### throw on error
-
 ````javascript
-validate({key: 'abc', value: 'def'}, {key: 'string', value: 'integer'}); // will throw an error
-console.log('valid object');
+const result = new Validate(input, pattern, options);
 ````
 
+- First parameter is the value you want to validate
+- Second parameter is the validation pattern
+- Third parameter is an optional object that currently support 'throwErr' option. If it is set to true, it will throw an error if the input is invalid.
+- This module returns an object:
+    * isValid: is a boolean, true if the input is valid
+    * output: is the validated input, useful when the input is optional, to return a default value
+    * results: is the validation results for complex inputs, each element for array inputs, and each key for object inputs
+    * error: error message when the validation fails,
+
+## Pattern
+
+A pattern can be one of these types (string, array, object):
+
+* string pattern: it validates that the input is matching the pattern. Examples:
 ````javascript
-validate({key: 'abc', value: 123}, {key: 'string', value: 'integer'}); // will return an object
-console.log('valid object');
+const assert = require('chai').assert;
+const Validate = require('cta-tools').validate;
+let result;
+result = new Validate(123, 'number'); assert(result.isValid);
+result = new Validate('abc', 'boolean'); assert(!result.isValid);
 ````
 
-### don't throw on error
-
+* object pattern: it validates the input with advanced features, like optional, defaultTo and items
 ````javascript
-const result = validate({key: 'abc', value: 'def'}, {key: 'string', value: 'integer'}, {throwErr: false}); // will return an object
-if (result.isValid) { // true
-    console.log('valid object');
-}
+result = new Validate(undefined, {type: 'string', optional: true, defaultTo: 'abc'}); assert(result.isValid); assert.strictEqual(result.output, 'abc');
+result = new Validate({a: 123, b: 'abc'}, {type: 'object', items: {a: 'number', b: 'string'}}); assert(result.isValid);
+result = new Validate(['abc', 'def'], {type: 'array', items: 'string'}); assert(result.isValid);
 ````
 
+* array pattern: it validates that the input is matching at least one of the patterns in the array
 ````javascript
-const result = validate({key: 'abc', value: 123}, {key: 'string', value: 'integer'}, {throwErr: false}); // will return an object
-if (result.isValid) { // false
-    console.log('valid object');
-}
+result = new Validate('abc', ['string', 'number']); assert(result.isValid);
+result = new Validate({a: 123}, [{type: 'object', items: {a: 'number'}}, 'string']); assert(result.isValid);
+result = new Validate('abc', [{type: 'object', items: {a: 'number'}}, 'string']); assert(result.isValid);
 ````
 
-### optional fields
+## Features
 
+- If the input is an array, and the pattern is an object with 'items' property, it will check that each element of the array is matching the items pattern
+- If the input is an object, and the pattern is an object with 'items' property:
+    * it checks that each key of the object is matching the items pattern
+    * it checks that all mandatory keys in the pattern are present in the input
+    * if a key is optional and not defined, it is set to its default
+
+
+## Examples
 ````javascript
-const pattern = {
-  key: {
-    type: 'string',
-  },
-  value: {
-    optional: true,
-    type: 'object',
-    defaultTo: {
-      a: 1,
-      b: 2,
-    },
-  },
-};
-const result = validate({key: 'abc'}, pattern);
-/*
-result = {
-    isValid: true,    
-    output: {
-        key: 'abc',
-        value: {
-            a: 1,
-            b: 2,
+'use strict';
+
+const assert = require('chai').assert;
+const Validate = require('cta-tools').validate;
+let result;
+
+result = new Validate('abc', 'string'); assert(result.isValid);
+result = new Validate(123, 'string'); assert(!result.isValid);
+
+result = new Validate('abc', ['string', 'number']); assert(result.isValid);
+result = new Validate(123, ['string', 'number']); assert(result.isValid);
+result = new Validate(true, ['string', 'number']); assert(!result.isValid);
+
+result = new Validate(undefined, {type: 'string', optional: true, defaultTo: 'abc'}); assert(result.isValid); assert.strictEqual(result.output, 'abc');
+result = new Validate(123, {type: 'string', optional: true, defaultTo: 'abc'}); assert(!result.isValid);
+result = new Validate(['abc', 'def'], {type: 'array', items: 'string'}); assert(result.isValid);
+result = new Validate(['abc', 123], {type: 'array', items: ['string', 'number']}); assert(result.isValid);
+result = new Validate(['abc', 123, true], {type: 'array', items: ['string', 'number']}); assert(!result.isValid);
+
+result = new Validate({a: 123, b: 'abc'}, {type: 'object', items: {a: 'number', b: 'string'}}); assert(result.isValid);
+result = new Validate({a: 123, b: true}, {type: 'object', items: {a: 'number', b: ['string', 'boolean']}}); assert(result.isValid);
+result = new Validate({a: 123, b: { c: 456, d: [789, true]}}, {
+  type: 'object',
+  items: {
+    a: 'number',
+    b: {
+      type: 'object',
+      items: {
+        c: 'number',
+        d: {
+          type: 'array',
+          items: ['number', 'boolean'],
         },
+      },
     },
-    ...
-}
-*/
+  },
+}); assert(result.isValid);
+result = new Validate({a: 123, b: { c: 456, d: [789, 'abc']}}, {
+  type: 'object',
+  items: {
+    a: 'number',
+    b: {
+      type: 'object',
+      items: {
+        c: 'number',
+        d: {
+          type: 'array',
+          items: ['number', 'boolean'],
+        },
+      },
+    },
+  },
+}); assert(!result.isValid);
+result = new Validate({a: {b: {c: {d: 1, e: true}}}}, {
+  type: 'object',
+  items: {
+    a: {
+      type: 'object',
+      items: {
+        b: {
+          type: 'object',
+          items: {
+            c: {
+              type: 'object',
+              items: {
+                d: 'number',
+                e: 'boolean',
+              },
+            },
+          },
+        },
+      },
+    },
+  },
+}); assert(result.isValid);
+
 ````
 
-Here result.output is the validated input with optional fields set to their default
+For more examples, see tests

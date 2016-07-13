@@ -21,21 +21,21 @@ const result = new Validate(input, pattern, options);
 - Third parameter is an optional object that currently support 'throwErr' option. If it is set to true, it will throw an error if the input is not matching the pattern.
 
 ````javascript
-result = new Validate(input, pattern, {throwErr: true}); // will throw an error
-result = new Validate(input, pattern); // will not throw an error
+result = new Validate(input, pattern, {throwErr: true}); // this will throw an error if the input is not matching
+result = new Validate(input, pattern); // you need to check the result to know if the input is matching or not, see below
 ````
 
-- This module returns an object:
-  * isValid: is a boolean, true if the input is valid
+- This module returns an object with these keys :
+  * isValid: is a boolean, true if the input is valid, false if not
   * output: is the validated input, useful when the input is optional, to return a default value
   * results: is the validation results for complex inputs, each element for array inputs, and each key for object inputs
-  * error: error message when the validation fails,
+  * error: is the error message when the validation fails,
 
 ## Pattern
 
 A pattern can be one of these types (string, array, object):
 
-- string pattern: it validates that the input is matching the pattern. Examples:
+- string pattern: it validates that the input type is matching the pattern. Examples:
 
 ````javascript
 const assert = require('chai').assert;
@@ -45,8 +45,8 @@ result = new Validate(123, 'number'); assert(result.isValid);
 result = new Validate('abc', 'boolean'); assert(!result.isValid);
 ````
 
-- object pattern: it validates the input with advanced features
-  * type {string}: is the string pattern
+- object pattern: it validates the input with advanced features. Pattern keys:
+  * type {string}: is the string pattern, see previous section.
 
 ````javascript
 result = new Validate(123, {type: 'number'});

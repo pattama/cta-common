@@ -1,7 +1,6 @@
 'use strict';
 
-const assert = require('chai').assert;
-const Validate = require('../../lib/validate/');
+const o = require('../../common');
 
 describe('validate: object input', function() {
   context('keys with string pattern', function() {
@@ -14,17 +13,17 @@ describe('validate: object input', function() {
         },
       };
       let result;
-      result = new Validate({a: 123, b: true}, pattern);
-      assert.isOk(result.isValid, 'should be ok');
-      assert.deepEqual(result.output, {a: 123, b: true});
-      result = new Validate({a: 'abc', b: true}, pattern);
-      assert.isNotOk(result.isValid, 'should not be ok (1)');
-      result = new Validate({a: 123}, pattern);
-      assert.isNotOk(result.isValid, 'should not be ok (2)');
+      result = o.validate({a: 123, b: true}, pattern);
+      o.assert.isOk(result.isValid, 'should be ok');
+      o.assert.deepEqual(result.output, {a: 123, b: true});
+      result = o.validate({a: 'abc', b: true}, pattern);
+      o.assert.isNotOk(result.isValid, 'should not be ok (1)');
+      result = o.validate({a: 123}, pattern);
+      o.assert.isNotOk(result.isValid, 'should not be ok (2)');
     });
     it('string pattern', function() {
-      const result = new Validate({a: 1}, 'number');
-      assert.isNotOk(result.isValid);
+      const result = o.validate({a: 1}, 'number');
+      o.assert.isNotOk(result.isValid);
     });
   });
 
@@ -38,11 +37,11 @@ describe('validate: object input', function() {
         },
       };
       let result;
-      result = new Validate({a: 123, b: 'abc'}, pattern);
-      assert.isOk(result.isValid);
-      assert.deepEqual(result.output, {a: 123, b: 'abc'});
-      result = new Validate({a: true, b: 'abc'}, pattern);
-      assert.isNotOk(result.isValid);
+      result = o.validate({a: 123, b: 'abc'}, pattern);
+      o.assert.isOk(result.isValid);
+      o.assert.deepEqual(result.output, {a: 123, b: 'abc'});
+      result = o.validate({a: true, b: 'abc'}, pattern);
+      o.assert.isNotOk(result.isValid);
     });
   });
 
@@ -60,11 +59,11 @@ describe('validate: object input', function() {
         },
       };
       let result;
-      result = new Validate({a: 123, b: 'abc'}, pattern);
-      assert.isOk(result.isValid);
-      assert.deepEqual(result.output, {a: 123, b: 'abc'});
-      result = new Validate({a: 'abc', b: 123}, pattern);
-      assert.isNotOk(result.isValid);
+      result = o.validate({a: 123, b: 'abc'}, pattern);
+      o.assert.isOk(result.isValid);
+      o.assert.deepEqual(result.output, {a: 123, b: 'abc'});
+      result = o.validate({a: 'abc', b: 123}, pattern);
+      o.assert.isNotOk(result.isValid);
     });
 
     it('simple type with optional', function() {
@@ -80,16 +79,16 @@ describe('validate: object input', function() {
         },
       };
       let result;
-      result = new Validate({a: 123}, pattern);
-      assert.isOk(result.isValid);
-      assert.deepEqual(result.output, {a: 123, b: 'abc'});
-      result = new Validate({a: 123, b: 'def'}, pattern);
-      assert.isOk(result.isValid);
-      assert.deepEqual(result.output, {a: 123, b: 'def'});
-      result = new Validate({a: 123, b: 456}, pattern);
-      assert.isNotOk(result.isValid);
-      result = new Validate({a: 'abc'}, pattern);
-      assert.isNotOk(result.isValid);
+      result = o.validate({a: 123}, pattern);
+      o.assert.isOk(result.isValid);
+      o.assert.deepEqual(result.output, {a: 123, b: 'abc'});
+      result = o.validate({a: 123, b: 'def'}, pattern);
+      o.assert.isOk(result.isValid);
+      o.assert.deepEqual(result.output, {a: 123, b: 'def'});
+      result = o.validate({a: 123, b: 456}, pattern);
+      o.assert.isNotOk(result.isValid);
+      result = o.validate({a: 'abc'}, pattern);
+      o.assert.isNotOk(result.isValid);
     });
 
     it('type array of string patterns', function() {
@@ -108,12 +107,12 @@ describe('validate: object input', function() {
         b: ['abc', 'def'],
       };
       let result;
-      result = new Validate(input, pattern);
-      assert.isOk(result.isValid);
-      assert.deepEqual(result.output, input);
+      result = o.validate(input, pattern);
+      o.assert.isOk(result.isValid);
+      o.assert.deepEqual(result.output, input);
       input.b[1] = 123;
-      result = new Validate(input, pattern);
-      assert.isNotOk(result.isValid);
+      result = o.validate(input, pattern);
+      o.assert.isNotOk(result.isValid);
     });
 
     it('type array of object patterns', function() {
@@ -138,12 +137,12 @@ describe('validate: object input', function() {
         b: [{c: 1, d: true}, {c: 2, d: false}],
       };
       let result;
-      result = new Validate(input, pattern);
-      assert.isOk(result.isValid, 'should be ok');
-      assert.deepEqual(result.output, input);
+      result = o.validate(input, pattern);
+      o.assert.isOk(result.isValid, 'should be ok');
+      o.assert.deepEqual(result.output, input);
       input.b.push({c: 3, d: 'abc'});
-      result = new Validate(input, pattern);
-      assert.isNotOk(result.isValid, 'should not be ok');
+      result = o.validate(input, pattern);
+      o.assert.isNotOk(result.isValid, 'should not be ok');
     });
   });
 
@@ -164,16 +163,16 @@ describe('validate: object input', function() {
         },
       }],
     };
-    let result = new Validate({a: 1, b: true}, pattern);
-    assert.isOk(result.isValid, 'should be ok (1)');
-    assert.deepEqual(result.output, {a: 1, b: true});
-    result = new Validate({a: true, b: 'abc'}, pattern);
-    assert.isOk(result.isValid, 'should be ok (2)');
-    assert.deepEqual(result.output, {a: true, b: 'abc'});
-    result = new Validate({a: true, b: false}, pattern);
-    assert.isNotOk(result.isValid, 'should not be ok (1)');
-    result = new Validate({a: 1, b: 'abc'}, pattern);
-    assert.isNotOk(result.isValid, 'should not be ok (2)');
+    let result = o.validate({a: 1, b: true}, pattern);
+    o.assert.isOk(result.isValid, 'should be ok (1)');
+    o.assert.deepEqual(result.output, {a: 1, b: true});
+    result = o.validate({a: true, b: 'abc'}, pattern);
+    o.assert.isOk(result.isValid, 'should be ok (2)');
+    o.assert.deepEqual(result.output, {a: true, b: 'abc'});
+    result = o.validate({a: true, b: false}, pattern);
+    o.assert.isNotOk(result.isValid, 'should not be ok (1)');
+    result = o.validate({a: 1, b: 'abc'}, pattern);
+    o.assert.isNotOk(result.isValid, 'should not be ok (2)');
   });
 
   it('object with 2 depths', function() {
@@ -190,11 +189,11 @@ describe('validate: object input', function() {
       },
     };
     const input = {a: {b: 'abc', c: 123}};
-    let result = new Validate(input, pattern);
-    assert.isOk(result.isValid);
+    let result = o.validate(input, pattern);
+    o.assert.isOk(result.isValid);
     input.a.c = false;
-    result = new Validate(input, pattern);
-    assert.isNotOk(result.isValid);
+    result = o.validate(input, pattern);
+    o.assert.isNotOk(result.isValid);
   });
 
   it('object with 3 depths', function() {
@@ -225,11 +224,11 @@ describe('validate: object input', function() {
         },
       },
     };
-    let result = new Validate(input, pattern);
-    assert.isOk(result.isValid);
+    let result = o.validate(input, pattern);
+    o.assert.isOk(result.isValid);
     input.a.c.e = true;
-    result = new Validate(input, pattern);
-    assert.isNotOk(result.isValid);
+    result = o.validate(input, pattern);
+    o.assert.isNotOk(result.isValid);
   });
 
   it('complex object 1', function() {
@@ -268,11 +267,11 @@ describe('validate: object input', function() {
         }],
       }],
     };
-    let result = new Validate(input, pattern);
-    assert.isOk(result.isValid, 'should be ok');
+    let result = o.validate(input, pattern);
+    o.assert.isOk(result.isValid, 'should be ok');
     input.bricks[0].publish[0].data = true;
-    result = new Validate(input, pattern);
-    assert.isNotOk(result.isValid, 'should not be ok');
+    result = o.validate(input, pattern);
+    o.assert.isNotOk(result.isValid, 'should not be ok');
   });
 
   it('complex object 2', function() {
@@ -323,11 +322,11 @@ describe('validate: object input', function() {
         }],
       }],
     };
-    let result = new Validate(input, pattern);
-    assert.isOk(result.isValid, 'should be ok');
+    let result = o.validate(input, pattern);
+    o.assert.isOk(result.isValid, 'should be ok');
     input.bricks[0].publish[0].data[0].nature = true;
-    result = new Validate(input, pattern);
-    assert.isNotOk(result.isValid, 'should not be ok');
+    result = o.validate(input, pattern);
+    o.assert.isNotOk(result.isValid, 'should not be ok');
   });
 
   it('complex object 3', function() {
@@ -390,10 +389,10 @@ describe('validate: object input', function() {
         }],
       }],
     };
-    let result = new Validate(input, pattern);
-    assert.isOk(result.isValid, 'should be ok');
+    let result = o.validate(input, pattern);
+    o.assert.isOk(result.isValid, 'should be ok');
     input.bricks[0].publish[0].data[0].nature.type = true;
-    result = new Validate(input, pattern);
-    assert.isNotOk(result.isValid, 'should not be ok');
+    result = o.validate(input, pattern);
+    o.assert.isNotOk(result.isValid, 'should not be ok');
   });
 });

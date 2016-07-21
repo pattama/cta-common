@@ -7,13 +7,13 @@ This module validates an input value according to a pattern.
 Require it
 
 ````javascript
-const Validate = require('cta-tools').validate;
+const validate = require('cta-tools').validate;
 ````
 
 Then you can call it with 2 or 3 parameters
 
 ````javascript
-const result = new Validate(input, pattern, options);
+const result = validate(input, pattern, options);
 ````
 
 - First parameter is the value you want to validate
@@ -21,8 +21,8 @@ const result = new Validate(input, pattern, options);
 - Third parameter is an optional object that currently support 'throwErr' option. If it is set to true, it will throw an error if the input is not matching the pattern.
 
 ````javascript
-result = new Validate(input, pattern, {throwErr: true}); // this will throw an error if the input is not matching
-result = new Validate(input, pattern); // you need to check the result to know if the input is matching or not, see below
+result = validate(input, pattern, {throwErr: true}); // this will throw an error if the input is not matching
+result = validate(input, pattern); // you need to check the result to know if the input is matching or not, see below
 ````
 
 - This module returns an object with these keys :
@@ -41,37 +41,37 @@ A pattern can be one of these types (string, array, object):
 const assert = require('chai').assert;
 const Validate = require('cta-tools').validate;
 let result;
-result = new Validate(123, 'number'); assert(result.isValid);
-result = new Validate('abc', 'boolean'); assert(!result.isValid);
+result = validate(123, 'number'); assert(result.isValid);
+result = validate('abc', 'boolean'); assert(!result.isValid);
 ````
 
 - object pattern: it validates the input with advanced features. Pattern keys:
   * type {string}: is the string pattern, see previous section.
 
 ````javascript
-result = new Validate(123, {type: 'number'});
+result = validate(123, {type: 'number'});
 ````
 
   * optional {true/false}: if true, then the input is optional. By default, all inputs are mandatory
   * defaultTo {any}: used in conjunction with optional, if input is not defined then it is set to a default value
 
 ````javascript
-result = new Validate(undefined, {type: 'string', optional: true, defaultTo: 'abc'});
+result = validate(undefined, {type: 'string', optional: true, defaultTo: 'abc'});
 ````
 
   * items {pattern}: if the input is an array/object, then this is the pattern of each element/key
 
 ````javascript
-result = new Validate({a: 123, b: 'abc'}, {type: 'object', items: {a: 'number', b: 'string'}});
-result = new Validate(['abc', 'def'], {type: 'array', items: 'string'});
+result = validate({a: 123, b: 'abc'}, {type: 'object', items: {a: 'number', b: 'string'}});
+result = validate(['abc', 'def'], {type: 'array', items: 'string'});
 ````
      
   * unique {true/false}: if true and the input type is an array, array elements should be unique.
     If the input type is an object inside an array, and 'unique' is set against a property then the property should be unique (see samples)
 
 ````javascript
-result = new Validate(['abc', 'def'], {type: 'array', items: 'string', unique: true});
-result = new Validate([{a: 'x', b: 1}, {a: 'y', b: 2}], {type: 'array', items: {
+result = validate(['abc', 'def'], {type: 'array', items: 'string', unique: true});
+result = validate([{a: 'x', b: 1}, {a: 'y', b: 2}], {type: 'array', items: {
     type: 'object',
     items: {
         a: { type: 'string', unique: true },
@@ -83,9 +83,9 @@ result = new Validate([{a: 'x', b: 1}, {a: 'y', b: 2}], {type: 'array', items: {
 - array pattern: it validates that the input is matching at least one of the patterns in the array
 
 ````javascript
-result = new Validate('abc', ['string', 'number']); assert(result.isValid);
-result = new Validate({a: 123}, [{type: 'object', items: {a: 'number'}}, 'string']); assert(result.isValid);
-result = new Validate('abc', [{type: 'object', items: {a: 'number'}}, 'string']); assert(result.isValid);
+result = validate('abc', ['string', 'number']); assert(result.isValid);
+result = validate({a: 123}, [{type: 'object', items: {a: 'number'}}, 'string']); assert(result.isValid);
+result = validate('abc', [{type: 'object', items: {a: 'number'}}, 'string']); assert(result.isValid);
 ````
 
 ## Features
@@ -105,22 +105,22 @@ const assert = require('chai').assert;
 const Validate = require('cta-tools').validate;
 let result;
 
-result = new Validate('abc', 'string'); assert(result.isValid);
-result = new Validate(123, 'string'); assert(!result.isValid);
+result = validate('abc', 'string'); assert(result.isValid);
+result = validate(123, 'string'); assert(!result.isValid);
 
-result = new Validate('abc', ['string', 'number']); assert(result.isValid);
-result = new Validate(123, ['string', 'number']); assert(result.isValid);
-result = new Validate(true, ['string', 'number']); assert(!result.isValid);
+result = validate('abc', ['string', 'number']); assert(result.isValid);
+result = validate(123, ['string', 'number']); assert(result.isValid);
+result = validate(true, ['string', 'number']); assert(!result.isValid);
 
-result = new Validate(undefined, {type: 'string', optional: true, defaultTo: 'abc'}); assert(result.isValid); assert.strictEqual(result.output, 'abc');
-result = new Validate(123, {type: 'string', optional: true, defaultTo: 'abc'}); assert(!result.isValid);
-result = new Validate(['abc', 'def'], {type: 'array', items: 'string'}); assert(result.isValid);
-result = new Validate(['abc', 123], {type: 'array', items: ['string', 'number']}); assert(result.isValid);
-result = new Validate(['abc', 123, true], {type: 'array', items: ['string', 'number']}); assert(!result.isValid);
+result = validate(undefined, {type: 'string', optional: true, defaultTo: 'abc'}); assert(result.isValid); assert.strictEqual(result.output, 'abc');
+result = validate(123, {type: 'string', optional: true, defaultTo: 'abc'}); assert(!result.isValid);
+result = validate(['abc', 'def'], {type: 'array', items: 'string'}); assert(result.isValid);
+result = validate(['abc', 123], {type: 'array', items: ['string', 'number']}); assert(result.isValid);
+result = validate(['abc', 123, true], {type: 'array', items: ['string', 'number']}); assert(!result.isValid);
 
-result = new Validate({a: 123, b: 'abc'}, {type: 'object', items: {a: 'number', b: 'string'}}); assert(result.isValid);
-result = new Validate({a: 123, b: true}, {type: 'object', items: {a: 'number', b: ['string', 'boolean']}}); assert(result.isValid);
-result = new Validate({a: 123, b: { c: 456, d: [789, true]}}, {
+result = validate({a: 123, b: 'abc'}, {type: 'object', items: {a: 'number', b: 'string'}}); assert(result.isValid);
+result = validate({a: 123, b: true}, {type: 'object', items: {a: 'number', b: ['string', 'boolean']}}); assert(result.isValid);
+result = validate({a: 123, b: { c: 456, d: [789, true]}}, {
   type: 'object',
   items: {
     a: 'number',
@@ -136,7 +136,7 @@ result = new Validate({a: 123, b: { c: 456, d: [789, true]}}, {
     },
   },
 }); assert(result.isValid);
-result = new Validate({a: 123, b: { c: 456, d: [789, 'abc']}}, {
+result = validate({a: 123, b: { c: 456, d: [789, 'abc']}}, {
   type: 'object',
   items: {
     a: 'number',
@@ -152,7 +152,7 @@ result = new Validate({a: 123, b: { c: 456, d: [789, 'abc']}}, {
     },
   },
 }); assert(!result.isValid);
-result = new Validate({a: {b: {c: {d: 1, e: true}}}}, {
+result = validate({a: {b: {c: {d: 1, e: true}}}}, {
   type: 'object',
   items: {
     a: {

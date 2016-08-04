@@ -13,7 +13,7 @@ This module validates an input object according to a pattern object.
 Require it
 
 ````javascript
-const validate = require('cta-tools').validate;
+const validate = require('cta-common').validate;
 ````
 
 Then you can call it with 2 or 3 parameters

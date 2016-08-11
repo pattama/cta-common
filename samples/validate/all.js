@@ -1,7 +1,7 @@
 'use strict';
 
 const assert = require('chai').assert;
-const validate = require('cta-tools').validate;
+const validate = require('../../lib').validate;
 let result;
 
 result = validate('abc', 'string'); assert(result.isValid);

@@ -17,8 +17,7 @@ describe('validate: special cases', function() {
         },
       },
     });
-    o.assert.isOk(result.isValid);
-    o.assert.strictEqual(result.output, 123);
+    o.assert.isNotOk(result.isValid);
   });
   it('incorrect object pattern', function() {
     const result = o.validate({a: 1}, {type: 'object', items: 'number'});

@@ -1,4 +1,4 @@
-# cta-tools
+# cta-common
 
 Common tools for cta open source project
 

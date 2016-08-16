@@ -4,6 +4,10 @@ const o = require('../../common');
 
 describe('validate: array input', function() {
   it('array of simple same types', function() {
+    const result = o.validate(123, {type: 'array', items: 'number'});
+    o.assert.isNotOk(result.isValid, 'should not be ok');
+  });
+  it('array of simple same types', function() {
     const pattern = {
       type: 'array',
       items: 'string',

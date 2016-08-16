@@ -28,7 +28,7 @@ result = validate(input, pattern); // you need to check the result to know if th
   * results: is the validation results for complex inputs (each element for array inputs, and each key for object inputs)
   * error: is the error message when the validation fails
 
-## Pattern
+## Validation patterns
 
 A pattern can be one of these types (string, array, object):
 
@@ -175,3 +175,52 @@ result = validate({a: {b: {c: {d: 1, e: true}}}}, {
 ````
 
 For more examples, see tests
+
+## Roadmap
+
+- Allow usage of custom/vendor validators. Example:
+````
+const validator = require('validator');
+const result = validate({
+  name: 'someone',
+  email: 'foo@bar.com'
+}, {
+  type: 'object',
+  items: {
+    name: 'string',
+    email: {
+      type: 'custom',
+      isValid: (input) => {
+        return validator.isEmail(input);
+      }
+    }
+  },
+})
+````
+
+- Allow short syntax for patterns. Example:
+````
+validate('abc', ['string', 'number']);
+// => validate('abc', 'string|number') 
+
+validate({a: 'b', c: 1}, {type: 'object', items: {a: 'string', b: ['number', 'string']}};
+// => validate({a: 'b', c: 1}, '{a:string,c:number|string}') 
+
+validate([1, 2, 3], {type: 'array', items: 'number'};
+// => validate([1, 2, 3], '[number]')
+
+validate([{a: 'a', b: 1}, {a: 'b', b: 2}], {
+ type: 'array',
+ items: {
+   type: 'object',
+   items: {
+     a: {
+       type: 'string',
+       unique: true,
+     },
+     b: 'number',
+   },
+ },
+}
+// => validate([{a: 'a', b: 1}, {a: 'b', b: 2}], '[{a:string*,b:number}]')
+````

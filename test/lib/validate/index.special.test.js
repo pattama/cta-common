@@ -2,8 +2,8 @@
 
 const o = require('../../common');
 
-describe('validate: special cases', function() {
-  it('null input', function() {
+describe('validate: in cases', function() {
+  it('null input, mandatory', function() {
     let result;
     result = o.validate(null, {a: 'number'});
     o.assert.isNotOk(result.isValid);
@@ -19,15 +19,7 @@ describe('validate: special cases', function() {
     });
     o.assert.isNotOk(result.isValid);
   });
-  it('incorrect object pattern', function() {
-    const result = o.validate({a: 1}, {type: 'object', items: 'number'});
-    o.assert.isNotOk(result.isValid);
-  });
-  it('incorrect array pattern', function() {
-    const result = o.validate(1, {type: 'array', items: 'string'});
-    o.assert.isNotOk(result.isValid);
-  });
-  it('empty object, optional fields', () => {
+  it('null input, optional object', () => {
     const result = o.validate(null, {
       type: 'object',
       optional: true,

@@ -27,4 +27,25 @@ describe('validate: special cases', function() {
     const result = o.validate(1, {type: 'array', items: 'string'});
     o.assert.isNotOk(result.isValid);
   });
+  it('empty object, optional fields', () => {
+    const result = o.validate(null, {
+      type: 'object',
+      optional: true,
+      items: {
+        author: {optional: true, type: 'string', defaultTo: 'UNKNOWN'},
+        level: {optional: true, type: 'string', defaultTo: 'debug'},
+        console: {optional: true, type: 'boolean', defaultTo: true},
+        file: {optional: true, type: 'boolean', defaultTo: true},
+        filename: {optional: true, type: 'string', defaultTo: './temp.log'},
+      },
+    });
+    o.assert.isOk(result.isValid);
+    o.assert.deepEqual(result.output, {
+      author: 'UNKNOWN',
+      level: 'debug',
+      console: true,
+      file: true,
+      filename: './temp.log',
+    });
+  });
 });

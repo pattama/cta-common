@@ -13,16 +13,21 @@ const validate = require('cta-common').validate;
 const result = validate(input, pattern, options);
 ````
 
+### arguments
+
 - First parameter is the value you want to validate
 - Second parameter is the validation pattern
 - Third parameter is an optional object of options:
   * option 'throwErr': Default to false. If set to true, it will throw an error if the input is not matching the pattern. If set to false, you need to check the validation result and decide what to do...
+
 ````javascript
 result = validate(input, pattern, {throwErr: true}); // this will throw an error if the input is not matching
 result = validate(input, pattern); // you need to check the result to know if the input is matching or not, see below
 ````
 
-- This module returns an object with these keys :
+### return
+
+This module returns an object with these keys :
   * isValid: is a boolean, true if the input is valid, false if not
   * output: is the validated input, useful when the input is optional (or has some optional properties) to return provided default value
   * results: is the validation results for complex inputs (each element for array inputs, and each key for object inputs)
@@ -67,6 +72,7 @@ result = validate(['abc', 'def'], {type: 'array', items: 'string'});
 ````
      
   * unique {true/false}: used for array types, if set to true then array elements should be unique. Example:
+
 ````javascript
 // simple usage
 result = validate(['abc', 'def'], {type: 'array', items: 'string', unique: true});
@@ -179,7 +185,8 @@ For more examples, see tests
 ## Roadmap
 
 - Allow usage of custom/vendor validators. Example:
-````
+
+````javascript
 const validator = require('validator');
 const result = validate({
   name: 'someone',
@@ -199,7 +206,8 @@ const result = validate({
 ````
 
 - Allow short syntax for patterns. Example:
-````
+
+````javascript
 validate('abc', ['string', 'number']);
 // => validate('abc', 'string|number') 
 

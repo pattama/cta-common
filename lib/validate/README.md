@@ -2,24 +2,21 @@
 
 This module validates an input value according to a pattern.
 
+It supports validating objects with high depth level of properties.
+
 ## How to use it
 
-Require it
-
 ````javascript
-const validate = require('cta-tools').validate;
-````
-
-Then you can call it with 2 or 3 parameters
-
-````javascript
+// Require it
+const validate = require('cta-common').validate;
+// Then you can call it with 2 or 3 parameters
 const result = validate(input, pattern, options);
 ````
 
 - First parameter is the value you want to validate
 - Second parameter is the validation pattern
-- Third parameter is an optional object that currently support 'throwErr' option. If it is set to true, it will throw an error if the input is not matching the pattern.
-
+- Third parameter is an optional object of options:
+  * option 'throwErr': Default to false. If set to true, it will throw an error if the input is not matching the pattern. If set to false, you need to check the validation result and decide what to do...
 ````javascript
 result = validate(input, pattern, {throwErr: true}); // this will throw an error if the input is not matching
 result = validate(input, pattern); // you need to check the result to know if the input is matching or not, see below
@@ -27,36 +24,39 @@ result = validate(input, pattern); // you need to check the result to know if th
 
 - This module returns an object with these keys :
   * isValid: is a boolean, true if the input is valid, false if not
-  * output: is the validated input, useful when the input is optional, to return a default value
-  * results: is the validation results for complex inputs, each element for array inputs, and each key for object inputs
-  * error: is the error message when the validation fails,
+  * output: is the validated input, useful when the input is optional (or has some optional properties) to return provided default value
+  * results: is the validation results for complex inputs (each element for array inputs, and each key for object inputs)
+  * error: is the error message when the validation fails
 
 ## Pattern
 
 A pattern can be one of these types (string, array, object):
 
-- string pattern: it validates that the input type is matching the pattern. Examples:
+- string pattern: this is the basic pattern, it validates that the input type is matching the type in pattern. Examples:
 
 ````javascript
 const assert = require('chai').assert;
-const Validate = require('cta-tools').validate;
+const validate = require('cta-common').validate;
 let result;
-result = validate(123, 'number'); assert(result.isValid);
-result = validate('abc', 'boolean'); assert(!result.isValid);
+result = validate('/tmp', 'dir'); assert(result.isValid);
+result = validate('/tmp/out.log', 'file'); assert(result.isValid);
 ````
 
-- object pattern: it validates the input with advanced features. Pattern keys:
-  * type {string}: is the string pattern, see previous section.
+- object pattern: this is an advanced pattern, it validates the input with some advanced features. Pattern keys:
+  * type {string}: is the string pattern, see previous section. Example:
 
 ````javascript
-result = validate(123, {type: 'number'});
+result = validate('/var/log', {type: 'dir'});
 ````
 
-  * optional {true/false}: if true, then the input is optional. By default, all inputs are mandatory
-  * defaultTo {any}: used in conjunction with optional, if input is not defined then it is set to a default value
+  * optional {true/false}: if set to true, then the input is optional. By default, all inputs are mandatory
+  * defaultTo {any}: used in conjunction with optional, if input is not defined then it is set to this default value. Example:
 
 ````javascript
-result = validate(undefined, {type: 'string', optional: true, defaultTo: 'abc'});
+function(path) {  
+  const _path = validate(path, {type: 'dir', optional: true, defaultTo: '/tmp'}).output;
+  ...
+}
 ````
 
   * items {pattern}: if the input is an array/object, then this is the pattern of each element/key
@@ -66,11 +66,11 @@ result = validate({a: 123, b: 'abc'}, {type: 'object', items: {a: 'number', b: '
 result = validate(['abc', 'def'], {type: 'array', items: 'string'});
 ````
      
-  * unique {true/false}: if true and the input type is an array, array elements should be unique.
-    If the input type is an object inside an array, and 'unique' is set against a property then the property should be unique (see samples)
-
+  * unique {true/false}: used for array types, if set to true then array elements should be unique. Example:
 ````javascript
+// simple usage
 result = validate(['abc', 'def'], {type: 'array', items: 'string', unique: true});
+// complex usage
 result = validate([{a: 'x', b: 1}, {a: 'y', b: 2}], {type: 'array', items: {
     type: 'object',
     items: {
@@ -80,7 +80,7 @@ result = validate([{a: 'x', b: 1}, {a: 'y', b: 2}], {type: 'array', items: {
 }});
 ````
 
-- array pattern: it validates that the input is matching at least one of the patterns in the array
+- array pattern: this is the most advanced pattern, since it can combine string and object patterns. It validates that the input is matching at least one of the patterns in the array. Examples:
 
 ````javascript
 result = validate('abc', ['string', 'number']); assert(result.isValid);
@@ -102,11 +102,8 @@ result = validate('abc', [{type: 'object', items: {a: 'number'}}, 'string']); as
 'use strict';
 
 const assert = require('chai').assert;
-const Validate = require('cta-tools').validate;
+const validate = require('cta-common').validate;
 let result;
-
-result = validate('abc', 'string'); assert(result.isValid);
-result = validate(123, 'string'); assert(!result.isValid);
 
 result = validate('abc', ['string', 'number']); assert(result.isValid);
 result = validate(123, ['string', 'number']); assert(result.isValid);

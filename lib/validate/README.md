@@ -54,6 +54,13 @@ result = validate('/tmp/out.log', 'file'); assert(result.isValid);
 result = validate('/var/log', {type: 'dir'});
 ````
 
+  * validator {function}: used in conjunction with type==='custom'. A custom/vendor validation method that should return :
+  ```
+  {
+    isValid: {boolean},
+    error: {Error}
+  }
+  ```
   * optional {true/false}: if set to true, then the input is optional. By default, all inputs are mandatory
   * defaultTo {any}: used in conjunction with optional, if input is not defined then it is set to this default value. Example:
 
@@ -183,27 +190,6 @@ result = validate({a: {b: {c: {d: 1, e: true}}}}, {
 For more examples, see tests
 
 ## Roadmap
-
-- Allow usage of custom/vendor validators. Example:
-
-````javascript
-const validator = require('validator');
-const result = validate({
-  name: 'someone',
-  email: 'foo@bar.com'
-}, {
-  type: 'object',
-  items: {
-    name: 'string',
-    email: {
-      type: 'custom',
-      isValid: (input) => {
-        return validator.isEmail(input);
-      }
-    }
-  },
-})
-````
 
 - Allow short syntax for patterns. Example:
 

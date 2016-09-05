@@ -15,9 +15,9 @@ describe('validate: types', function() {
     o.assert.isNotOk(types('foo/bar', 'file'));
   });
 
-  it('objectid', function() {
+  it('identifier', function() {
     const id = (new ObjectID()).toString();
-    o.assert.isOk(types(id, 'objectid'));
-    o.assert.isNotOk(types('111', 'objectid'));
+    o.assert.isOk(types(id, 'identifier'));
+    o.assert.isNotOk(types('111', 'identifier'));
   });
 });

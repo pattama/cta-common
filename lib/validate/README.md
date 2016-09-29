@@ -1,4 +1,5 @@
-# validate module
+validate module
+===============
 
 This module validates an input value according to a pattern.
 

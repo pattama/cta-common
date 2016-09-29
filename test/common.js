@@ -1,12 +1,13 @@
 'use strict';
 
-const tools = require('../lib');
+const lib = require('../lib');
 const chai = require('chai');
 const sinon = require('sinon');
 
 module.exports = {
-  tools: tools,
-  validate: tools.validate,
+  lib: lib,
+  validate: lib.validate,
+  loader: lib.loader,
   assert: chai.assert,
   sinon: sinon,
 };

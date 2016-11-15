@@ -10,4 +10,5 @@ module.exports = {
   loader: lib.loader,
   assert: chai.assert,
   sinon: sinon,
+  path: require('path'),
 };

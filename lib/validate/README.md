@@ -78,6 +78,22 @@ function(path) {
 result = validate({a: 123, b: 'abc'}, {type: 'object', items: {a: 'number', b: 'string'}});
 result = validate(['abc', 'def'], {type: 'array', items: 'string'});
 ````
+
+  * defaultToOptionals {boolean}: used in conjunction with optional, if input is not defined then it is set to items default values. Example:
+
+````javascript
+result = validate(null, {
+  type: 'object',
+  optional: true,
+  items: {
+    author: 'string',
+    level: {optional: true, type: 'string', defaultTo: 'debug'},
+    console: {optional: true, type: 'boolean'},
+  },
+  defaultToOptionals: true,
+});
+// will set result.output to {level: 'debug'}
+````   
      
   * unique {true/false}: used for array types, if set to true then array elements should be unique. Example:
 

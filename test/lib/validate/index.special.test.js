@@ -30,6 +30,7 @@ describe('validate: in cases', function() {
         file: {optional: true, type: 'boolean', defaultTo: true},
         filename: {optional: true, type: 'string', defaultTo: './temp.log'},
       },
+      defaultToOptionals: true,
     });
     o.assert.isOk(result.isValid);
     o.assert.deepEqual(result.output, {

@@ -8,6 +8,7 @@ module.exports = {
   lib: lib,
   validate: lib.validate,
   loader: lib.loader,
+  root: lib.root,
   assert: chai.assert,
   sinon: sinon,
   path: require('path'),

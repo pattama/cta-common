@@ -1,7 +1,10 @@
 root module
 ===========
 
-This module allows you to find your application root path depending on the structure of your environment, either all is inside node_modules or not
+This module allows you to find your application root path depending on the structure of your environment:
+* your app is a standalone application
+* your app is is inside node_modules of an aggregated application
+* all is inside node_modules
 
 # How to use it
 
@@ -30,6 +33,7 @@ It will return `var/www/cta-app-aggregated/node_modules/cta-app-myapp`
 
 * In case of all is inside node_modules: 
 ````
+var/www/cta/node_modules/cta-app-aggregated
 var/www/cta/node_modules/cta-app-myapp
 var/www/cta/node_modules/cta-common
 ````
@@ -37,6 +41,7 @@ It will return `var/www/cta/node_modules/cta-app-myapp`
 
 * In case of all is inside node_modules, with many node_modules folders: 
 ````
+var/www/cta/node_modules/cta-oss/node_modules/cta-app-aggregated
 var/www/cta/node_modules/cta-oss/node_modules/cta-app-myapp
 var/www/cta/node_modules/cta-oss/node_modules/cta-common
 ````

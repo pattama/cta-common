@@ -13,7 +13,7 @@ This module allows you to find your application root path depending on the struc
 const root = require('cta-common').root('cta-app-myapp');
 ````
 
-This will return the root path of your application whenever the structure of your environment
+This will return the root path of your application however is the structure of your environment
 
 # Examples
 

@@ -2,7 +2,7 @@
 
 const o = require('../../common');
 
-describe('Root', function() {
+describe('root', function() {
   context('when it is a standalone application', function() {
     /**
      * var/www/cta-app-myapp

@@ -22,6 +22,7 @@ describe('Config', function() {
   after(function() {
     root.root.restore();
     o.loader.asArray.restore();
+    o.path.join.restore();
   });
 
   context('when configuration environment is not provided', function() {

@@ -2,6 +2,7 @@
 
 const config = require('../../../lib/config');
 const root = require('../../../lib/root');
+const loader = require('../../../lib/loader');
 const o = require('../../common');
 const configDefault = require('./config.default.testdata');
 const configDefaultFull = require('./config.default.full.testdata');
@@ -14,14 +15,14 @@ describe('Config', function() {
       return 'root';
     });
     o.assert.strictEqual(o.root('myapp'), 'root');
-    o.sinon.stub(o.loader, 'asArray', function(key, dir) {
+    o.sinon.stub(loader, 'asArray', function(key, dir) {
       return configDefault[key];
     });
   });
 
   after(function() {
     root.root.restore();
-    o.loader.asArray.restore();
+    loader.asArray.restore();
     o.path.join.restore();
   });
 
@@ -35,9 +36,9 @@ describe('Config', function() {
       o.assert.strictEqual(o.path.join('root', 'lib', 'apps', 'main', 'config'), 'configDir');
       o.assert.strictEqual(o.path.join('configDir', 'properties'), confPropPath);
       o.assert.strictEqual(o.path.join('configDir', 'env', 'local.js'), '');
-      o.sinon.stub(config, '_env').returns('');
+      o.sinon.stub(config, 'env').returns('');
       const finalConfig = o.config('myapp');
-      config._env.restore();
+      config.env.restore();
       o.assert.deepEqual(finalConfig, configDefaultFull);
     });
   });
@@ -57,9 +58,9 @@ describe('Config', function() {
       o.assert.strictEqual(o.path.join('configDir', 'env', 'dev.js'), confDevPath);
       o.assert.strictEqual(o.path.join('configDir', 'properties'), confPropPath);
       o.assert.strictEqual(o.path.join('configDir', 'env', 'local.js'), '');
-      o.sinon.stub(config, '_env').returns('dev');
+      o.sinon.stub(config, 'env').returns('dev');
       const finalConfig = o.config('myapp');
-      config._env.restore();
+      config.env.restore();
       o.assert.deepEqual(finalConfig, configDefaultDev);
     });
   });
@@ -79,9 +80,9 @@ describe('Config', function() {
       o.assert.strictEqual(o.path.join('configDir', 'env', 'dev.js'), confDevPath);
       o.assert.strictEqual(o.path.join('configDir', 'properties'), confPropPath);
       o.assert.strictEqual(o.path.join('configDir', 'env', 'local.js'), confLocalPath);
-      o.sinon.stub(config, '_env').returns('dev');
+      o.sinon.stub(config, 'env').returns('dev');
       const finalConfig = o.config('myapp');
-      config._env.restore();
+      config.env.restore();
       o.assert.deepEqual(finalConfig, configDefaultDevLocal);
     });
   });

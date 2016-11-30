@@ -6,12 +6,12 @@ const sinon = require('sinon');
 const path = require('path');
 
 module.exports = {
-  lib: lib,
+  lib,
   validate: lib.validate,
   loader: lib.loader,
   root: lib.root,
   config: lib.config,
   assert: chai.assert,
-  sinon: sinon,
-  path: path,
+  sinon,
+  path,
 };

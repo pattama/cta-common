@@ -2,12 +2,12 @@
 
 const o = require('../../common');
 
-describe('validate: array input', function() {
-  it('array of simple same types', function() {
-    const result = o.validate(123, {type: 'array', items: 'number'});
+describe('validate: array input', function () {
+  it('array of simple same types', function () {
+    const result = o.validate(123, { type: 'array', items: 'number' });
     o.assert.isNotOk(result.isValid, 'should not be ok');
   });
-  it('array of simple same types', function() {
+  it('array of simple same types', function () {
     const pattern = {
       type: 'array',
       items: 'string',
@@ -19,7 +19,7 @@ describe('validate: array input', function() {
     o.assert.isNotOk(result.isValid, 'should not be ok');
   });
 
-  it('array of simple different types', function() {
+  it('array of simple different types', function () {
     const input = [123, 'abc', true, 456];
     let result = o.validate(input, {
       type: 'array',
@@ -34,7 +34,7 @@ describe('validate: array input', function() {
     o.assert.isNotOk(result.isValid);
   });
 
-  it('array of same object types', function() {
+  it('array of same object types', function () {
     const pattern = {
       type: 'array',
       items: [{
@@ -45,7 +45,7 @@ describe('validate: array input', function() {
         },
       }],
     };
-    const input = [{a: 1, b: true}, {a: 2, b: false}, {a: 3, b: true}];
+    const input = [{ a: 1, b: true }, { a: 2, b: false }, { a: 3, b: true }];
     let result = o.validate(input, pattern);
     o.assert.isOk(result.isValid);
     o.assert.deepEqual(result.output, input);
@@ -54,7 +54,7 @@ describe('validate: array input', function() {
     o.assert.isNotOk(result.isValid);
   });
 
-  it('array of different object types', function() {
+  it('array of different object types', function () {
     const pattern = {
       type: 'array',
       items: [{
@@ -71,7 +71,7 @@ describe('validate: array input', function() {
         },
       }],
     };
-    const input = [{a: 1, b: true}, {c: 'abc', d: false}, {a: 3, b: true}];
+    const input = [{ a: 1, b: true }, { c: 'abc', d: false }, { a: 3, b: true }];
     let result = o.validate(input, pattern);
     o.assert.isOk(result.isValid);
     o.assert.deepEqual(result.output, input);
@@ -80,7 +80,7 @@ describe('validate: array input', function() {
     o.assert.isNotOk(result.isValid);
   });
 
-  it('array of simple & object types', function() {
+  it('array of simple & object types', function () {
     const pattern = {
       type: 'array',
       items: ['string', {
@@ -91,12 +91,12 @@ describe('validate: array input', function() {
         },
       }],
     };
-    let result = o.validate(['abc', {a: 1, b: true}], pattern);
+    let result = o.validate(['abc', { a: 1, b: true }], pattern);
     o.assert.isOk(result.isValid);
-    o.assert.deepEqual(result.output, ['abc', {a: 1, b: true}]);
+    o.assert.deepEqual(result.output, ['abc', { a: 1, b: true }]);
     result = o.validate(['abc', 123], pattern);
     o.assert.isNotOk(result.isValid);
-    result = o.validate([{a: 1, b: true}, false], pattern);
+    result = o.validate([{ a: 1, b: true }, false], pattern);
     o.assert.isNotOk(result.isValid);
   });
 });

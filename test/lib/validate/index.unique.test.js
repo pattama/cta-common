@@ -2,8 +2,8 @@
 
 const o = require('../../common');
 
-describe('validate: unique', function() {
-  it('array of unique simple items', function() {
+describe('validate: unique', function () {
+  it('array of unique simple items', function () {
     let result;
     const pattern = {
       type: 'array',
@@ -18,7 +18,7 @@ describe('validate: unique', function() {
     o.assert.isNotOk(result.isValid, 'should not be ok');
   });
 
-  it('array of unique object items', function() {
+  it('array of unique object items', function () {
     let result;
     const pattern = {
       type: 'array',
@@ -30,13 +30,13 @@ describe('validate: unique', function() {
         },
       },
     };
-    result = o.validate([{a: 1}, {a: 2}, {a: 3}], pattern);
+    result = o.validate([{ a: 1 }, { a: 2 }, { a: 3 }], pattern);
     o.assert.isOk(result.isValid, 'should be ok');
-    result = o.validate([{a: 1}, {a: 2}, {a: 1}], pattern);
+    result = o.validate([{ a: 1 }, { a: 2 }, { a: 1 }], pattern);
     o.assert.isNotOk(result.isValid, 'should not be ok');
   });
 
-  it('array of objects with one unique property', function() {
+  it('array of objects with one unique property', function () {
     let result;
     const pattern = {
       type: 'array',
@@ -48,13 +48,13 @@ describe('validate: unique', function() {
         },
       },
     };
-    result = o.validate([{a: 'x', b: 1}, {a: 'y', b: 2}], pattern);
+    result = o.validate([{ a: 'x', b: 1 }, { a: 'y', b: 2 }], pattern);
     o.assert.isOk(result.isValid, 'should be ok');
-    result = o.validate([{a: 'x', b: 1}, {a: 'x', b: 2}], pattern);
+    result = o.validate([{ a: 'x', b: 1 }, { a: 'x', b: 2 }], pattern);
     o.assert.isNotOk(result.isValid, 'should not be ok');
   });
 
-  it('array of objects with multiple unique properties', function() {
+  it('array of objects with multiple unique properties', function () {
     let result;
     const pattern = {
       type: 'array',
@@ -67,11 +67,11 @@ describe('validate: unique', function() {
         },
       },
     };
-    result = o.validate([{a: 'x', b: 1, c: true}, {a: 'y', b: 2, c: false}], pattern);
+    result = o.validate([{ a: 'x', b: 1, c: true }, { a: 'y', b: 2, c: false }], pattern);
     o.assert.isOk(result.isValid, 'should be ok');
-    result = o.validate([{a: 'x', b: 1, c: true}, {a: 'x', b: 2, c: false}], pattern);
+    result = o.validate([{ a: 'x', b: 1, c: true }, { a: 'x', b: 2, c: false }], pattern);
     o.assert.isNotOk(result.isValid, 'should not be ok');
-    result = o.validate([{a: 'x', b: 1, c: true}, {a: 'y', b: 1, c: false}], pattern);
+    result = o.validate([{ a: 'x', b: 1, c: true }, { a: 'y', b: 1, c: false }], pattern);
     o.assert.isNotOk(result.isValid, 'should not be ok');
   });
 });

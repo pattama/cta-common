@@ -2,9 +2,9 @@
 
 const o = require('../../common');
 
-describe('validate: non object input', function() {
-  context('string pattern', function() {
-    it('non object string patterns', function() {
+describe('validate: non object input', function () {
+  context('string pattern', function () {
+    it('non object string patterns', function () {
       let result;
       result = o.validate(123, 'number');
       o.assert.isOk(result.isValid);
@@ -26,22 +26,22 @@ describe('validate: non object input', function() {
     });
   });
 
-  context('object pattern', function() {
-    it('simple', function() {
-      let result = o.validate(123, {type: 'number'});
+  context('object pattern', function () {
+    it('simple', function () {
+      let result = o.validate(123, { type: 'number' });
       o.assert.isOk(result.isValid);
       o.assert.strictEqual(result.output, 123);
-      result = o.validate(true, {type: 'number'});
+      result = o.validate(true, { type: 'number' });
       o.assert.isNotOk(result.isValid);
 
-      result = o.validate('abc', {type: ['number', 'string']});
+      result = o.validate('abc', { type: ['number', 'string'] });
       o.assert.isOk(result.isValid);
       o.assert.strictEqual(result.output, 'abc');
-      result = o.validate(false, {type: ['number', 'string']});
+      result = o.validate(false, { type: ['number', 'string'] });
       o.assert.isNotOk(result.isValid);
     });
 
-    it('with optional', function() {
+    it('with optional', function () {
       let result;
       const pattern = {
         type: 'string',
@@ -60,61 +60,61 @@ describe('validate: non object input', function() {
       o.assert.isNotOk(result.isValid);
     });
 
-    context('simple type with custom validator', function() {
-      context('when custom validator is incorrect (not a function)', function() {
-        it('should throw error', function() {
+    context('simple type with custom validator', function () {
+      context('when custom validator is incorrect (not a function)', function () {
+        it('should throw error', function () {
           const input = 123;
           const pattern = {
             type: 'custom',
             validator: {},
           };
-          o.assert.throws(function() {
+          o.assert.throws(function () {
             return o.validate(input, pattern);
           }, `custom validator is not a function for value ${input}`);
         });
       });
 
-      context('when custom validator returns a non object response', function() {
-        it('should throw error', function() {
+      context('when custom validator returns a non object response', function () {
+        it('should throw error', function () {
           const input = 123;
           const pattern = {
             type: 'custom',
             validator: o.sinon.stub().returns('not-an-object'),
           };
-          o.assert.throws(function() {
+          o.assert.throws(function () {
             return o.validate(input, pattern);
           }, `incorrect object response from custom validator for value ${input}`);
         });
       });
 
-      context('when custom validator returns a non boolean response.isValid', function() {
-        it('should throw error', function() {
+      context('when custom validator returns a non boolean response.isValid', function () {
+        it('should throw error', function () {
           const input = 123;
           const pattern = {
             type: 'custom',
             validator: o.sinon.stub().returns({ isValid: 'not-a-boolean' }),
           };
-          o.assert.throws(function() {
+          o.assert.throws(function () {
             return o.validate(input, pattern);
           }, `incorrect boolean response.isValid from custom validator for value ${input}`);
         });
       });
 
-      context('when custom validator returns a non Error response.error', function() {
-        it('should throw error', function() {
+      context('when custom validator returns a non Error response.error', function () {
+        it('should throw error', function () {
           const input = 123;
           const pattern = {
             type: 'custom',
             validator: o.sinon.stub().returns({ isValid: false, error: {} }),
           };
-          o.assert.throws(function() {
+          o.assert.throws(function () {
             return o.validate(input, pattern);
           }, `incorrect Error response.error from custom validator for value ${input}`);
         });
       });
 
-      context('when custom validator returns true', function() {
-        it('should return true', function() {
+      context('when custom validator returns true', function () {
+        it('should return true', function () {
           const input = 123;
           const pattern = {
             type: 'custom',
@@ -127,15 +127,15 @@ describe('validate: non object input', function() {
         });
       });
 
-      context('when custom validator returns false', function() {
-        it('should return false', function() {
+      context('when custom validator returns false', function () {
+        it('should return false', function () {
           const input = 123;
           const error = new Error('mock error');
           const pattern = {
             type: 'custom',
             validator: o.sinon.stub().returns({
               isValid: false,
-              error: error,
+              error,
             }),
           };
           const result = o.validate(input, pattern);
@@ -147,8 +147,8 @@ describe('validate: non object input', function() {
     });
   });
 
-  context('array pattern', function() {
-    it('array of string patterns', function() {
+  context('array pattern', function () {
+    it('array of string patterns', function () {
       let result;
       result = o.validate(123, ['number', 'string']);
       o.assert.isOk(result.isValid);
@@ -157,7 +157,7 @@ describe('validate: non object input', function() {
       o.assert.isNotOk(result.isValid);
     });
 
-    it('array of object patterns', function() {
+    it('array of object patterns', function () {
       let result;
       const pattern = {
         type: 'string',

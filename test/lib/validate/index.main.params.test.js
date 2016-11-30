@@ -2,42 +2,42 @@
 
 const o = require('../../common');
 
-describe('validate: main arguments', function() {
-  it('reject if no arguments passed', function() {
+describe('validate: main arguments', function () {
+  it('reject if no arguments passed', function () {
     try {
-      let result = o.validate();
+      o.validate();
     } catch (e) {
       console.log(e);
       o.assert(e.message);
     }
   });
-  it('reject if invalid pattern: undefined', function() {
+  it('reject if invalid pattern: undefined', function () {
     try {
-      let result = o.validate(1);
+      o.validate(1);
     } catch (e) {
       console.log(e);
       o.assert(e.message);
     }
   });
-  it('reject if invalid pattern: wrong type', function() {
+  it('reject if invalid pattern: wrong type', function () {
     try {
-      let result = o.validate(1, 2);
+      o.validate(1, 2);
     } catch (e) {
       console.log(e);
       o.assert(e.message);
     }
   });
-  it('reject if invalid pattern: wrong type', function() {
+  it('reject if invalid pattern: wrong type', function () {
     try {
-      let result = o.validate(1, null);
+      o.validate(1, null);
     } catch (e) {
       console.log(e);
       o.assert(e.message);
     }
   });
-  it('reject if invalid array pattern', function() {
+  it('reject if invalid array pattern', function () {
     try {
-      let result = o.validate(1, ['number', 1]);
+      o.validate(1, ['number', 1]);
     } catch (e) {
       console.log(e);
       o.assert(e.message);

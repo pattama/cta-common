@@ -28,7 +28,7 @@ module.exports = {
         d: true,
         e: [1, 2, 3],
       },
-    }
+    },
   ],
   bricks: [
     {

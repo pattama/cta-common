@@ -7,7 +7,7 @@ describe('validate: main arguments', function () {
     try {
       o.validate();
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       o.assert(e.message);
     }
   });
@@ -15,7 +15,7 @@ describe('validate: main arguments', function () {
     try {
       o.validate(1);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       o.assert(e.message);
     }
   });
@@ -23,7 +23,7 @@ describe('validate: main arguments', function () {
     try {
       o.validate(1, 2);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       o.assert(e.message);
     }
   });
@@ -31,7 +31,7 @@ describe('validate: main arguments', function () {
     try {
       o.validate(1, null);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       o.assert(e.message);
     }
   });
@@ -39,7 +39,7 @@ describe('validate: main arguments', function () {
     try {
       o.validate(1, ['number', 1]);
     } catch (e) {
-      console.log(e);
+      // console.log(e);
       o.assert(e.message);
     }
   });

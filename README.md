@@ -2,8 +2,6 @@
 
 Common Modules for Compass Test Automation
 
----
-
 ## General Overview
 
 * config module

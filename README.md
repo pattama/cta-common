@@ -10,8 +10,8 @@ In cta-common, there are four modules as following:
 
 1. [ConfigModule](#1-configmodule)
 1. [LoaderModule](#2-loadermodule)
-1. [RootModule](#rootmodule)
-1. [ValidateModule](#validatemodule)
+1. [RootModule](#3-rootmodule)
+1. [ValidateModule](#4-validatemodule)
 
 These modules providing common functions across CTA-OSS.
 
@@ -23,7 +23,7 @@ We aim to give you brief guidelines here.
 const cta_common = require("cta-common");
 ```
 
-### 1 ConfigModule
+### 1. ConfigModule
 
 It loads the config for specified module using file structure: **[module_root]/lib/apps/main/config**.
 
@@ -34,15 +34,19 @@ const config = cta_common.config(moduleName);
 
 The file, which locates at _sample-module/lib/apps/main/config/index.js_, is loaded as the **config**.
 
-### 2 LoaderModule
+### 2. LoaderModule
 
-It loads modules from _(*.js)_ files in specified directory.
+It loads modules from all _*.js_ files in specified directory. Other extension files are excluded.
+
+For example: there are three files in directory:  _**module1.js**_, _**module2.js**_, and _**module3.js**_
+
 
 #### Output as Array
 
 ```javascript
 const sampleDirectory = "sample-directory";
 const array_output = cta_common.loader.asArray(sampleDirectory);
+// array_output = [ {default_export_module1}, {default_export_module2}, {default_export_module3} ]
 ```
 
 #### Output as Object
@@ -50,10 +54,15 @@ const array_output = cta_common.loader.asArray(sampleDirectory);
 ```javascript
 const sampleDirectory = "sample-directory";
 const object_output = cta_common.loader.asObject(sampleDirectory);
+// object_output = {
+//   module1: {default_export_module1},
+//   module2: {default_export_module2},
+//   module3: {default_export_module3},
+// }
 ```
 
-### RootModule
+### 3. RootModule
 
-### ValidateModule
+### 4. ValidateModule
 
 

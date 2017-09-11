@@ -4,12 +4,32 @@ Common Modules for Compass Test Automation
 
 ## General Overview
 
-* config module
-* loader module
-* root module
-* validate module
-
 ### Overview
 
+In cta-common, there are four modules as following:
 
----
+1. [ConfigModule](#configmodule)
+1. [LoaderModule](#loadermodule)
+1. [RootModule](#rootmodule)
+1. [ValidateModule](#validatemodule)
+
+We aim to give you brief guidelines here.
+
+```javascript
+const cta_common = require("cta-common");
+```
+
+### ConfigModule
+
+```javascript
+const moduleName = "sample-module";
+const config = cta_common.config(moduleName);
+```
+
+### LoaderModule
+
+### RootModule
+
+### ValidateModule
+
+

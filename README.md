@@ -63,6 +63,24 @@ const object_output = cta_common.loader.asObject(sampleDirectory);
 
 ### 3. RootModule
 
+It resolves the root directory of module.
+
+```javascript
+const moduleName = "samplemodule";
+const root = cta_common.root(moduleName);
+```
+
+For example, *[executing_application]/node_modules/samplemodule*
+
 ### 4. ValidateModule
 
+It validates the **input** against specified **pattern**.
 
+```javascript
+const input = { value: "sample input" };
+const pattern = "object";
+
+const output = cta_common.validate(input, pattern);
+```
+
+This module is used to validate a bridge and a tool in CTA-OSS.

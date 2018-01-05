@@ -7,6 +7,7 @@
   "scripts": {
     "test": "NODE_PATH=. _mocha",
     "codecoverage": "istanbul cover node_modules/mocha/bin/_mocha -- -R spec",
+    "coveralls": "istanbul cover ./node_modules/mocha/bin/_mocha --report lcovonly -- -R spec && cat ./coverage/lcov.info | ./node_modules/coveralls/bin/coveralls.js && codecov",
     "lint": "eslint --quiet lib test",
     "docs": "jsdoc --readme README.md lib -r -d docs && opener ./docs/index.html"
   },
@@ -20,6 +21,8 @@
   "devDependencies": {
     "chai": "^3.4.0",
     "chai-as-promised": "^5.1.0",
+    "codecov": "^3.0.0",
+    "coveralls": "^3.0.0",
     "eslint": "^3.2.2",
     "eslint-config-cta": "^1.0.1",
     "istanbul": "^0.4.1",

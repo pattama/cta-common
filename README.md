@@ -1,5 +1,6 @@
 # cta-common
-[![Build Status](https://travis-ci.org/thomsonreuters/cta-common.svg?branch=master)](https://travis-ci.org/thomsonreuters/cta-common) 
+[![Build Status](https://travis-ci.org/thomsonreuters/cta-common.svg?branch=master)](https://travis-ci.org/thomsonreuters/cta-common)
+[![Coverage Status](https://coveralls.io/repos/github/thomsonreuters/cta-common/badge.svg?branch=master)](https://coveralls.io/github/thomsonreuters/cta-common?branch=master)
 [![codecov](https://codecov.io/gh/thomsonreuters/cta-common/branch/master/graph/badge.svg)](https://codecov.io/gh/thomsonreuters/cta-common)
 
 Common Modules for Compass Test Automation, One of Libraries in CTA-OSS Framework
